@@ -64,7 +64,7 @@ export default function AbstractVisual() {
             <Compass className="w-3 h-3" />
             <span>Conceptual Model</span>
           </span>
-          <span className="px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
+          <span className="hidden sm:inline px-2 py-0.5 rounded bg-slate-800 text-slate-300 border border-slate-700">
             Full-Stack Architecture
           </span>
         </div>
@@ -124,7 +124,7 @@ export default function AbstractVisual() {
                 type="button"
                 onClick={() => setActiveNode(index)}
                 onMouseEnter={() => setActiveNode(index)}
-                className={`text-left p-3 rounded-xl transition-all border ${
+                className={`min-w-0 text-left p-3 rounded-xl transition-all border ${
                   isSelected
                     ? 'bg-slate-900/95 border-accent-emerald/60 shadow-lg shadow-emerald-950/30'
                     : 'bg-dark-950/70 border-slate-800/80 hover:border-slate-700/90 hover:bg-slate-900/60'
@@ -138,7 +138,7 @@ export default function AbstractVisual() {
                   }`}>
                     <Icon className="w-4 h-4" />
                   </div>
-                  <span className={`text-[10px] font-mono px-1.5 py-0.5 rounded border ${
+                  <span className={`hidden sm:inline text-[10px] font-mono px-1.5 py-0.5 rounded border ${
                     isSelected 
                       ? 'bg-emerald-950/50 text-emerald-400 border-emerald-800/50' 
                       : 'bg-slate-900 text-slate-400 border-slate-800'
