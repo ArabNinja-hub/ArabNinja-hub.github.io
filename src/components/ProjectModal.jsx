@@ -5,24 +5,28 @@ import GithubIcon from './GithubIcon';
 export default function ProjectModal({ project, onClose }) {
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
+  const previousActiveElementRef = useRef(null);
 
   // Focus trap and ESC key handling
   useEffect(() => {
     if (!project) return;
 
     // Save previous active element to restore focus when closing
-    const previousActiveElement = document.activeElement;
+    previousActiveElementRef.current = document.activeElement;
 
-    // Focus close button initially
-    if (closeButtonRef.current) {
-      closeButtonRef.current.focus();
-    }
+    // Focus close button initially after modal mounts
+    const focusTimer = setTimeout(() => {
+      if (closeButtonRef.current) {
+        closeButtonRef.current.focus();
+      }
+    }, 50);
 
     // Lock body scroll
     document.body.style.overflow = 'hidden';
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
+        e.preventDefault();
         onClose();
         return;
       }
@@ -30,10 +34,19 @@ export default function ProjectModal({ project, onClose }) {
       // Trap Tab key inside modal
       if (e.key === 'Tab' && modalRef.current) {
         const focusableElements = modalRef.current.querySelectorAll(
-          'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+          'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
         );
+        if (focusableElements.length === 0) return;
+
         const firstElement = focusableElements[0];
         const lastElement = focusableElements[focusableElements.length - 1];
+
+        // If focus has leaked outside modal or is on an un-focusable container, redirect into modal
+        if (!modalRef.current.contains(document.activeElement)) {
+          e.preventDefault();
+          firstElement.focus();
+          return;
+        }
 
         if (e.shiftKey) {
           if (document.activeElement === firstElement) {
@@ -52,10 +65,11 @@ export default function ProjectModal({ project, onClose }) {
     window.addEventListener('keydown', handleKeyDown);
 
     return () => {
+      clearTimeout(focusTimer);
       document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
-      if (previousActiveElement && previousActiveElement.focus) {
-        previousActiveElement.focus();
+      if (previousActiveElementRef.current && previousActiveElementRef.current.focus) {
+        previousActiveElementRef.current.focus();
       }
     };
   }, [project, onClose]);
@@ -77,6 +91,7 @@ export default function ProjectModal({ project, onClose }) {
         role="dialog"
         aria-modal="true"
         aria-labelledby="modal-project-title"
+        tabIndex={-1}
         className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-dark-900 border border-slate-700/80 shadow-2xl shadow-black text-slate-100 focus:outline-none"
         onClick={(e) => e.stopPropagation()}
       >

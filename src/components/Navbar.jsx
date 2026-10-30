@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import { Menu, X, ExternalLink } from 'lucide-react';
 import GithubIcon from './GithubIcon';
 import { personalInfo, navigationLinks } from '../config/portfolioData';
@@ -6,6 +6,9 @@ import { personalInfo, navigationLinks } from '../config/portfolioData';
 export default function Navbar({ activeSection }) {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [hasScrolled, setHasScrolled] = useState(false);
+  const toggleButtonRef = useRef(null);
+  const mobileMenuRef = useRef(null);
+  const previousActiveElement = useRef(null);
 
   // Track scroll position for navbar styling
   useEffect(() => {
@@ -17,28 +20,67 @@ export default function Navbar({ activeSection }) {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Handle ESC key to close mobile menu
-  useEffect(() => {
-    const handleKeyDown = (e) => {
-      if (e.key === 'Escape' && isMobileMenuOpen) {
-        setIsMobileMenuOpen(false);
-      }
-    };
-
-    window.addEventListener('keydown', handleKeyDown);
-    return () => window.removeEventListener('keydown', handleKeyDown);
-  }, [isMobileMenuOpen]);
-
-  // Prevent background scroll when mobile menu is open
+  // Handle focus containment, ESC key, and focus restoration for mobile menu
   useEffect(() => {
     if (isMobileMenuOpen) {
+      previousActiveElement.current = document.activeElement;
       document.body.style.overflow = 'hidden';
-    } else {
-      document.body.style.overflow = '';
+
+      // Focus first link in mobile menu after mount
+      const timer = setTimeout(() => {
+        if (mobileMenuRef.current) {
+          const firstFocusable = mobileMenuRef.current.querySelector('a, button, [tabindex]:not([tabindex="-1"])');
+          if (firstFocusable) firstFocusable.focus();
+        }
+      }, 50);
+
+      const handleKeyDown = (e) => {
+        if (e.key === 'Escape') {
+          e.preventDefault();
+          setIsMobileMenuOpen(false);
+          return;
+        }
+
+        if (e.key === 'Tab' && mobileMenuRef.current) {
+          const focusableElements = mobileMenuRef.current.querySelectorAll(
+            'a[href], button:not([disabled]), [tabindex]:not([tabindex="-1"])'
+          );
+          if (focusableElements.length === 0) return;
+
+          const firstElement = focusableElements[0];
+          const lastElement = focusableElements[focusableElements.length - 1];
+
+          if (!mobileMenuRef.current.contains(document.activeElement)) {
+            e.preventDefault();
+            firstElement.focus();
+            return;
+          }
+
+          if (e.shiftKey) {
+            if (document.activeElement === firstElement) {
+              e.preventDefault();
+              lastElement.focus();
+            }
+          } else {
+            if (document.activeElement === lastElement) {
+              e.preventDefault();
+              firstElement.focus();
+            }
+          }
+        }
+      };
+
+      window.addEventListener('keydown', handleKeyDown);
+
+      return () => {
+        clearTimeout(timer);
+        document.body.style.overflow = '';
+        window.removeEventListener('keydown', handleKeyDown);
+        if (previousActiveElement.current && previousActiveElement.current.focus) {
+          previousActiveElement.current.focus();
+        }
+      };
     }
-    return () => {
-      document.body.style.overflow = '';
-    };
   }, [isMobileMenuOpen]);
 
   return (
@@ -120,6 +162,7 @@ export default function Navbar({ activeSection }) {
               <GithubIcon className="w-4 h-4" aria-hidden="true" />
             </a>
             <button
+              ref={toggleButtonRef}
               type="button"
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-900/80 border border-slate-800 focus:outline-none focus:ring-2 focus:ring-accent-emerald"
@@ -140,8 +183,13 @@ export default function Navbar({ activeSection }) {
       {/* Mobile Menu Overlay */}
       {isMobileMenuOpen && (
         <div
+          ref={mobileMenuRef}
           id="mobile-nav"
-          className="fixed inset-0 top-16 sm:top-20 bg-dark-950/95 backdrop-blur-xl z-40 md:hidden flex flex-col justify-between border-t border-slate-800/80 animate-fade-in"
+          role="dialog"
+          aria-modal="true"
+          aria-label="Mobile Navigation Menu"
+          tabIndex={-1}
+          className="fixed inset-0 top-16 sm:top-20 bg-dark-950/95 backdrop-blur-xl z-40 md:hidden flex flex-col justify-between border-t border-slate-800/80 animate-fade-in focus:outline-none"
         >
           <div className="px-6 py-8 space-y-4">
             <div className="text-xs font-mono text-slate-500 uppercase tracking-wider mb-2">
@@ -172,6 +220,7 @@ export default function Navbar({ activeSection }) {
               href={personalInfo.githubUrl}
               target="_blank"
               rel="noopener noreferrer"
+              onClick={() => setIsMobileMenuOpen(false)}
               className="flex items-center justify-center gap-2 w-full py-3 px-4 rounded-lg bg-slate-800 hover:bg-slate-700 text-white font-medium text-sm border border-slate-700 transition-colors"
             >
               <GithubIcon className="w-4 h-4" aria-hidden="true" />

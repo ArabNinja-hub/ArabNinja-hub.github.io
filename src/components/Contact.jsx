@@ -148,7 +148,7 @@ export default function Contact() {
                     {personalInfo.institution}
                   </h4>
                   <p className="text-xs text-slate-400 leading-relaxed">
-                    Pursuing computer science and web technologies while architecting real-world applications in retail and education.
+                    Currently studying at Copperbelt University while independently developing web applications and exploring practical technology solutions in business management, accommodation and education.
                   </p>
                 </div>
               </div>

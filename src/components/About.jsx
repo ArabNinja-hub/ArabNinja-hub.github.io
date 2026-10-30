@@ -35,7 +35,7 @@ export default function About() {
             <span>BACKGROUND & PERSPECTIVE</span>
           </div>
           <h2 className="text-3xl sm:text-4xl font-extrabold tracking-tight text-white mb-6">
-            Combining academic computer science with independent software entrepreneurship.
+            Combining academic learning with independent software entrepreneurship.
           </h2>
           <p className="text-slate-300 text-lg leading-relaxed">
             Developing practical software systems rooted in real-world African operational challenges.
@@ -155,3 +155,4 @@ export default function About() {
     </section>
   );
 }
+

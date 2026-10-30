@@ -14,3 +14,4 @@ export default function GithubIcon({ className = 'w-4 h-4', ...props }) {
     </svg>
   );
 }
+
