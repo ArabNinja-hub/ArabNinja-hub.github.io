@@ -39,6 +39,9 @@ jobs:
       - name: Run production build
         run: npm run build
 
+      - name: Verify production HTML and assets
+        run: node scripts/check-dist.mjs
+
       - name: Setup Pages
         uses: actions/configure-pages@v5
 
