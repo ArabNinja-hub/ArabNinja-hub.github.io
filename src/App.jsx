@@ -1,64 +1,50 @@
-import React from 'react';
-import { personalInfo } from './config/portfolioData';
+import React, { useEffect, useState } from 'react';
+import { ArrowDown, ArrowUpRight, Code2, Database, Layers3, Globe2, Lightbulb, Microscope } from 'lucide-react';
+import Navbar from './components/Navbar';
+import AbstractVisual from './components/AbstractVisual';
+import ProjectModal from './components/ProjectModal';
+import { personalInfo, projects } from './config/portfolioData';
 
-const Arrow = () => <span aria-hidden="true">↗</span>;
+const areas = [
+  { icon: Code2, title: 'Frontend development', text: 'Responsive interfaces and thoughtful user experiences.' },
+  { icon: Globe2, title: 'Backend development', text: 'Application logic, endpoints and connected services.' },
+  { icon: Database, title: 'Database design', text: 'Organising data around the needs of a product.' },
+  { icon: Layers3, title: 'Web application architecture', text: 'Connecting interfaces, logic and data into useful systems.' },
+  { icon: Lightbulb, title: 'Product development', text: 'Exploring ideas and developing them into practical tools.' },
+  { icon: Microscope, title: 'Technology research', text: 'Investigating possibilities, limitations and real-world context.' },
+];
 
-function SectionLabel({ number, children }) {
-  return <div className="section-label"><span>{number} /</span><span>{children}</span></div>;
+function SectionHeading({ label, title, description }) {
+  return <div className="section-heading"><div className="section-label"><span />{label}</div><h2>{title}</h2>{description && <p>{description}</p>}</div>;
 }
 
-function App() {
-  return (
-    <>
-      <a className="skip-link" href="#main-content">Skip to content</a>
-      <header className="site-header wrap">
-        <a className="wordmark" href="#home" aria-label="Ronisher Bwalya, home"><span className="wordmark-symbol">r<span>.</span>b</span><span className="wordmark-name">Ronisher<br />Bwalya</span></a>
-        <nav aria-label="Main navigation"><a href="#projects">Projects</a><a href="#about">About</a><a href="#contact">Contact <Arrow /></a></nav>
-      </header>
-
-      <main id="main-content">
-        <section className="hero wrap" id="home">
-          <div className="hero-top"><span>Independent developer <span className="slash">/</span> Zambia</span><span>Portfolio — 2026</span></div>
-          <div className="hero-main">
-            <div className="hero-heading"><p className="eyebrow"><span className="accent-mark">✳</span> Web developer &amp; technology entrepreneur</p><h1>Ronisher<br /><em>Bwalya</em><span className="period">.</span></h1></div>
-            <div className="hero-side"><span className="side-index">01 — INTRODUCTION</span><p>I build practical digital products and explore technology-driven solutions to real-world problems.</p><a className="text-link" href="#projects">Explore selected work <span>↘</span></a></div>
-          </div>
-          <div className="hero-bottom"><span>Thoughtful ideas.<br />Practical applications.</span><span className="scroll-note">SCROLL TO EXPLORE <span>↓</span></span></div>
-        </section>
-
-        <section className="projects-section" id="projects">
-          <div className="wrap">
-            <SectionLabel number="01">Selected work</SectionLabel>
-            <div className="section-intro"><h2>Ideas in<br /><em>progress.</em></h2><p>A selection of projects exploring everyday problems in business, accommodation and education.</p></div>
-            <div className="project-list">
-              <article className="project project-countup">
-                <div className="project-visual countup-visual" aria-label="Abstract typographic artwork for CountUp"><div className="visual-meta"><span>BUSINESS MANAGEMENT</span><span>01 / 03</span></div><div className="countup-art" aria-hidden="true"><span className="count-line">count</span><span className="up-line">up<span className="count-dot">.</span></span><span className="count-plus">+</span></div><div className="visual-bottom"><span>MAKE THE NUMBERS COUNT</span><span>CU—01</span></div></div>
-                <div className="project-copy"><div className="project-kicker"><span>01 / BUSINESS</span><span className="status">In development</span></div><h3>CountUp<span>.</span></h3><p>A small-business management application designed to help shop owners manage sales, inventory and customer credit records.</p><a className="text-link" href="https://github.com/ArabNinja-hub/CountUp" target="_blank" rel="noopener noreferrer">View repository <Arrow /></a></div>
-              </article>
-              <article className="project project-nestiq">
-                <div className="project-visual nestiq-visual" aria-label="Abstract architectural artwork for Nestiq"><div className="visual-meta"><span>ACCOMMODATION</span><span>02 / 03</span></div><div className="nestiq-art" aria-hidden="true"><div className="arch arch-one"></div><div className="arch arch-two"></div><span>n.</span></div><div className="visual-bottom"><span>SPACE TO BELONG</span><span>N—02</span></div></div>
-                <div className="project-copy"><div className="project-kicker"><span>02 / ACCOMMODATION</span><span className="status">In development</span></div><h3>Nestiq<span>.</span></h3><p>An accommodation marketplace concept designed to connect people looking for accommodation with property providers.</p><span className="project-note">Concept in development <span>↗</span></span></div>
-              </article>
-              <article className="project project-orqeli">
-                <div className="project-visual orqeli-visual" aria-label="Abstract grid artwork for ORQELI"><div className="visual-meta"><span>EDUCATION TECHNOLOGY</span><span>03 / 03</span></div><div className="orqeli-art" aria-hidden="true"><span>O</span><span>R</span><span>Q</span><span>E</span><span>L</span><span>I</span></div><div className="visual-bottom"><span>LEARNING, CONSIDERED</span><span>O—03</span></div></div>
-                <div className="project-copy"><div className="project-kicker"><span>03 / EDUCATION</span><span className="status">Research and development</span></div><h3>ORQELI<span>.</span></h3><p>An education technology concept focused on improving school administration and access to academic results.</p><span className="project-note">Research in progress <span>↗</span></span></div>
-              </article>
-            </div>
-            <div className="work-end"><span>MORE TO COME</span><span>Always learning, always building. ↗</span></div>
-          </div>
-        </section>
-
-        <section className="about-section wrap" id="about">
-          <SectionLabel number="02">A little about me</SectionLabel>
-          <div className="about-grid"><div><h2>Curious by<br /><em>nature.</em></h2><div className="about-stamp"><span>RB</span><small>INDEPENDENT<br />PERSPECTIVE</small></div></div><div className="about-copy"><p className="about-lead">I’m a Zambian web developer and technology entrepreneur interested in building practical digital products that address real-world problems.</p><p>My work focuses on web development, software architecture and the exploration of technology-driven solutions across education, business management and digital services.</p><p>As a student at Copperbelt University, I combine academic learning with independent product development, research and experimentation.</p><div className="about-location"><span>BASED IN</span><strong>Kitwe, Zambia</strong><span>STUDYING AT</span><strong>Copperbelt University</strong></div></div></div>
-        </section>
-
-        <section className="practice-section" id="skills"><div className="wrap"><SectionLabel number="03">Areas of interest</SectionLabel><div className="practice-grid"><div><h2>What I’m<br /><em>working on.</em></h2><p>From the first idea to the systems behind it, I’m interested in how useful things are made.</p></div><div className="practice-list">{['Frontend development', 'Backend development', 'Database design', 'Web application architecture', 'Product development', 'Technology research'].map((item, i) => <div key={item}><span>0{i + 1}</span><h3>{item}</h3><span>↗</span></div>)}</div></div></div></section>
-
-        <section className="contact-section" id="contact"><div className="wrap"><SectionLabel number="04">Get in touch</SectionLabel><div className="contact-grid"><div><p className="eyebrow">HAVE A QUESTION OR AN IDEA?</p><h2>Let’s make<br /><em>contact.</em></h2></div><div className="contact-copy"><p>Interested in the work or want to start a conversation? Find me on GitHub.</p><a className="contact-link" href={personalInfo.githubUrl} target="_blank" rel="noopener noreferrer"><span>Visit my GitHub</span><Arrow /></a><span className="contact-handle">@ARABNINJA-HUB</span></div></div><footer><a href="#home" className="footer-brand">r<span>.</span>b</a><p>© {new Date().getFullYear()} Ronisher Bwalya<br /><span>Made with intention in Zambia.</span></p><a href="#home" className="back-top">BACK TO TOP ↑</a></footer></div></section>
-      </main>
-    </>
-  );
+function ProjectArtwork({ id }) {
+  if (id === 'countup') return <div className="project-art art-countup" aria-hidden="true"><div className="art-top"><span>BUSINESS MANAGEMENT</span><span>01 / 03</span></div><div className="countup-mark"><span className="mark-bars"><i /><i /><i /><i /></span><strong>Count<span>Up</span></strong><small>SALES / INVENTORY / CREDIT</small></div><div className="art-bottom"><span>PRODUCT CONCEPT</span><span>↗</span></div></div>;
+  if (id === 'nestiq') return <div className="project-art art-nestiq" aria-hidden="true"><div className="art-top"><span>ACCOMMODATION</span><span>02 / 03</span></div><div className="nestiq-mark"><div className="nest-shape"><i /><i /><i /></div><strong>nestiq<span>.</span></strong></div><div className="art-bottom"><span>MARKETPLACE CONCEPT</span><span>↗</span></div></div>;
+  return <div className="project-art art-orqeli" aria-hidden="true"><div className="art-top"><span>EDUCATION TECHNOLOGY</span><span>03 / 03</span></div><div className="orqeli-mark"><div className="orq-symbol"><i /><i /><i /><i /></div><strong>ORQELI</strong><small>EDUCATION / SYSTEMS</small></div><div className="art-bottom"><span>RESEARCH CONCEPT</span><span>↗</span></div></div>;
 }
 
-export default App;
+export default function App() {
+  const [activeSection, setActiveSection] = useState('home');
+  const [selectedProject, setSelectedProject] = useState(null);
+  useEffect(() => {
+    const observer = new IntersectionObserver(entries => entries.forEach(entry => { if (entry.isIntersecting) setActiveSection(entry.target.id); }), { rootMargin: '-30% 0px -60% 0px' });
+    ['home', 'about', 'projects', 'skills', 'contact'].forEach(id => { const el = document.getElementById(id); if (el) observer.observe(el); });
+    return () => observer.disconnect();
+  }, []);
+  return <div className="site-shell">
+    <a className="skip-link" href="#main-content">Skip to main content</a>
+    <Navbar activeSection={activeSection} />
+    <main id="main-content">
+      <section className="hero" id="home"><div className="container hero-grid">
+        <div className="hero-copy"><div className="hero-context"><span className="status-dot" /> INDEPENDENT DEVELOPER <span className="context-divider">/</span> KITWE, ZAMBIA</div><p className="intro-label">Hello, I’m</p><h1>Ronisher Bwalya<span>.</span></h1><h2>Web Developer <span>&amp;</span><br className="title-break" /> Technology Entrepreneur</h2><p className="hero-description">Building digital products, exploring ideas and turning real-world problems into practical technology solutions.</p><div className="hero-actions"><a className="button button-primary" href="#projects">Explore projects <ArrowDown size={16} /></a><a className="button button-secondary" href="#contact">Get in touch <ArrowUpRight size={16} /></a></div><div className="hero-footnote"><span>STUDENT AT COPPERBELT UNIVERSITY</span><span>WEB DEVELOPMENT &amp; ARCHITECTURE</span></div></div>
+        <div className="hero-visual"><div className="visual-caption"><span>THE WAY I THINK ABOUT SOFTWARE</span><span>01 / SYSTEMS</span></div><AbstractVisual /><p className="visual-note"><span>↳</span> A conceptual view of how the pieces connect.</p></div>
+      </div></section>
+      <section className="projects section" id="projects"><div className="container"><div className="section-top"><SectionHeading label="SELECTED WORK" title="Projects with a purpose." description="A closer look at ideas I’m developing across business, accommodation and education." /><span className="section-index">01 — 03 / PROJECTS</span></div><div className="project-list">{projects.map((project, i) => <article className={`project-row project-${project.id}`} key={project.id}><ProjectArtwork id={project.id} /><div className="project-info"><div className="project-meta"><span>0{i + 1} / {project.category}</span><span className="project-status"><i />{project.status}</span></div><h3>{project.id === 'orqeli' ? 'ORQELI' : project.title}</h3><p>{project.description}</p><div className="project-tags">{project.technologyStack.slice(0, 3).map(tech => <span key={tech}>{tech}</span>)}</div><div className="project-actions"><button className="project-link" onClick={() => setSelectedProject(project)}>Explore project <ArrowUpRight size={16} /></button>{project.repository.url && <a className="project-repo" href={project.repository.url} target="_blank" rel="noopener noreferrer">GitHub repository <ArrowUpRight size={14} /></a>}</div></div></article>)}</div></div></section>
+      <section className="about section" id="about"><div className="container about-grid"><div><SectionHeading label="ABOUT ME" title="Building with context." description="A little about the person behind the projects." /><div className="about-caption"><span>RB / 01</span><span>LEARNING BY BUILDING</span></div></div><div className="about-content"><p className="about-lead">I’m a Zambian web developer and technology entrepreneur interested in building practical digital products that address real-world problems.</p><p>My work focuses on web development, software architecture and the exploration of technology-driven solutions across education, business management and digital services.</p><p>As a student at Copperbelt University, I combine academic learning with independent product development, research and experimentation.</p><div className="about-facts"><div><span>BASED IN</span><strong>Kitwe, Zambia</strong></div><div><span>STUDYING AT</span><strong>Copperbelt University</strong></div></div></div></div></section>
+      <section className="skills section" id="skills"><div className="container"><div className="section-top"><SectionHeading label="AREAS OF INTEREST" title="From idea to architecture." description="The disciplines I explore when turning an idea into a working product." /><span className="section-index">06 / WORKING AREAS</span></div><div className="areas-grid">{areas.map(({ icon: Icon, title, text }, i) => <div className="area" key={title}><div className="area-icon"><Icon size={19} strokeWidth={1.5} /></div><div><span className="area-number">0{i + 1}</span><h3>{title}</h3><p>{text}</p></div></div>)}</div><div className="tools-line"><span>WORKING WITH</span><p>HTML <i>/</i> CSS <i>/</i> JavaScript <i>/</i> React <i>/</i> Node.js <i>/</i> Express <i>/</i> Git</p></div></div></section>
+      <section className="contact section" id="contact"><div className="container contact-inner"><div><SectionHeading label="GET IN TOUCH" title="Let’s start a conversation." description="Interested in the work or have an idea to discuss? Find me on GitHub." /></div><a href={personalInfo.githubUrl} target="_blank" rel="noopener noreferrer" className="contact-action"><span><small>MY PUBLIC PROFILE</small><strong>github.com/ArabNinja-hub</strong></span><ArrowUpRight size={20} /></a></div></section>
+    </main><footer><div className="container footer-inner"><div><a className="footer-brand" href="#home"><span>RB</span> Ronisher Bwalya</a><p>Web Developer &amp; Technology Entrepreneur</p></div><div className="footer-links"><a href="#projects">Projects</a><a href="#about">About</a><a href="#contact">Contact</a><a href="#home">Back to top ↑</a></div><small>© {new Date().getFullYear()} Ronisher Bwalya · Kitwe, Zambia</small></div></footer>
+    {selectedProject && <ProjectModal project={selectedProject} onClose={() => setSelectedProject(null)} />}
+  </div>;
+}
