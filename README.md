@@ -108,7 +108,8 @@ This website is configured for automated deployment to **https://arabninja-hub.g
 2. **Enable GitHub Pages in Repository Settings:**
    - Go to your repository on GitHub: `https://github.com/ArabNinja-hub/ArabNinja-hub.github.io`
    - Navigate to **Settings** > **Pages**
-   - Under **Build and deployment > Source**, select **GitHub Actions**
+   - Under **Build and deployment > Source**, select **GitHub Actions**. Do not select “Deploy from a branch”: serving the repository root publishes the Vite source HTML and its `/src/main.jsx` entry instead of the compiled site.
+   - This setting requires repository administrator access and is separate from the workflow file. After changing it, run the deployment workflow from the Actions tab (or push to `main`).
 
 3. **Push the codebase to GitHub:**
    ```bash
@@ -122,7 +123,7 @@ This website is configured for automated deployment to **https://arabninja-hub.g
 
 4. **Automated Deployment:**
    - The workflow in `.github/workflows/deploy.yml` will automatically trigger on push to `main`.
-   - It runs `npm ci`, builds the site via `npm run build`, uploads the `dist` directory, and deploys it live to `https://arabninja-hub.github.io/`.
+   - It runs `npm ci`, builds the site via `npm run build`, checks the generated HTML and local assets, uploads the `dist` directory, and deploys it live to `https://arabninja-hub.github.io/`.
    - Verify deployment under the **Actions** tab of your repository.
 
 ---
