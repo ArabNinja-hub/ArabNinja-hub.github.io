@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import useScrollLock from '../hooks/useScrollLock';
 import { X, Lock, FileText, CheckCircle2, FlaskConical, Cpu, AlertTriangle, ExternalLink, ArrowRight } from 'lucide-react';
 import GithubIcon from './GithubIcon';
 
@@ -6,6 +7,7 @@ export default function ProjectModal({ project, onClose }) {
   const modalRef = useRef(null);
   const closeButtonRef = useRef(null);
   const previousActiveElementRef = useRef(null);
+  useScrollLock(Boolean(project));
 
   // Focus trap and ESC key handling
   useEffect(() => {
@@ -21,8 +23,6 @@ export default function ProjectModal({ project, onClose }) {
       }
     }, 50);
 
-    // Lock body scroll
-    document.body.style.overflow = 'hidden';
 
     const handleKeyDown = (e) => {
       if (e.key === 'Escape') {
@@ -66,7 +66,6 @@ export default function ProjectModal({ project, onClose }) {
 
     return () => {
       clearTimeout(focusTimer);
-      document.body.style.overflow = '';
       window.removeEventListener('keydown', handleKeyDown);
       if (previousActiveElementRef.current && previousActiveElementRef.current.focus) {
         previousActiveElementRef.current.focus();
@@ -82,7 +81,7 @@ export default function ProjectModal({ project, onClose }) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center p-4 sm:p-6 lg:p-8 bg-black/80 backdrop-blur-md animate-fade-in"
+      className="project-modal-backdrop"
       onClick={onClose}
       role="presentation"
     >
@@ -92,7 +91,7 @@ export default function ProjectModal({ project, onClose }) {
         aria-modal="true"
         aria-labelledby="modal-project-title"
         tabIndex={-1}
-        className="relative w-full max-w-3xl max-h-[90vh] overflow-y-auto rounded-2xl bg-dark-900 border border-slate-700/80 shadow-2xl shadow-black text-slate-100 focus:outline-none"
+        className="project-modal"
         onClick={(e) => e.stopPropagation()}
       >
         {/* Modal Header */}
@@ -115,7 +114,7 @@ export default function ProjectModal({ project, onClose }) {
             ref={closeButtonRef}
             type="button"
             onClick={onClose}
-            className="p-2 rounded-lg text-slate-400 hover:text-white hover:bg-slate-800 transition-colors focus:outline-none focus:ring-2 focus:ring-accent-emerald"
+            className="modal-close"
             aria-label="Close project details modal"
           >
             <X className="w-5 h-5" />
@@ -127,7 +126,7 @@ export default function ProjectModal({ project, onClose }) {
           {/* Title & Tagline */}
           <div>
             <h2 id="modal-project-title" className="text-3xl font-extrabold text-white tracking-tight mb-2">
-              {project.title}
+              {project.id === 'orqeli' ? 'ORQELI' : project.title}
             </h2>
             <p className="text-slate-300 text-base leading-relaxed italic border-l-2 border-emerald-500 pl-3">
               "{project.description}"
