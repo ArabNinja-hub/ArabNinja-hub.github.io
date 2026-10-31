@@ -16,3 +16,19 @@
 /* Keep touch actions aligned on phones; give tablet content room to breathe. */
 @media(max-width:767px){.hero-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.hero-actions .button{min-width:0;padding-inline:10px;gap:8px}}
 @media(min-width:768px) and (max-width:1023px){.areas-grid{grid-template-columns:repeat(2,minmax(0,1fr))}.contact-inner{grid-template-columns:1fr;gap:28px}.contact-action{max-width:480px}}
+
+/* A restrained silver finish, with a readable solid-colour fallback. */
+.hero h1{font-size:clamp(55px,6.1vw,86px);line-height:1.02;letter-spacing:-.055em}
+.hero h1 .hero-name{color:#e4e9ed}
+@supports ((-webkit-background-clip:text) or (background-clip:text)){
+  .hero h1 .hero-name{background:linear-gradient(165deg,#ffffff 4%,#dbe2e8 30%,#a6b1bb 48%,#f8fafc 62%,#9daab5 100%);-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+}
+.hero h1 .hero-period{color:#34d399}
+@media(max-width:767px){.hero h1{font-size:clamp(48px,11.5vw,72px)}}
+@media(max-width:360px){.hero h1{font-size:clamp(44px,12vw,48px)}}
+
+/* Keep contact methods readable and easy to tap at every screen size. */
+.contact-links{display:grid;gap:10px;min-width:0}
+.contact-links .contact-action{max-width:none;padding:16px 20px}
+.contact-links .contact-action svg{flex:none}
+@media(min-width:768px) and (max-width:1023px){.contact-links{max-width:480px;width:100%}}
