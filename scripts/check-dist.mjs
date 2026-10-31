@@ -7,6 +7,14 @@ if (/\/src\/|\.jsx(?:["'?#\s>]|$)|\/@vite\/client/i.test(html)) {
   throw new Error('Production HTML contains a development source reference');
 }
 
+// The Pages host cannot set custom response headers, so the production HTML
+// must retain the meta CSP added by the build configuration.
+const csp = /<meta\b[^>]*http-equiv=["']Content-Security-Policy["'][^>]*content=["']([^"']*)["']/i.exec(html);
+const policy = csp?.[1].replaceAll('&#39;', "'");
+if (!policy || !policy.includes("script-src 'self'") || !policy.includes("object-src 'none'") || /'unsafe-(?:inline|eval)'/.test(policy)) {
+  throw new Error('Production HTML is missing its expected restrictive security policy');
+}
+
 const moduleScript = /<script\b[^>]*\btype=["']module["'][^>]*\bsrc=["'](\/assets\/[^"']+\.js)["']/i.exec(html);
 const stylesheet = /<link\b[^>]*\brel=["']stylesheet["'][^>]*\bhref=["'](\/assets\/[^"']+\.css)["']/i.exec(html);
 if (!moduleScript || !stylesheet) {
