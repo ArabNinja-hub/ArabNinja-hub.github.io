@@ -47,7 +47,8 @@ export default function App() {
         <div className="container contact-inner">
           <div><SectionHeading label="GET IN TOUCH" title="Let’s start a conversation." description="Interested in the work or have an idea to discuss? Get in touch or find me online." /></div>
           <div className="contact-links" aria-label="Contact links">
-            <a href="tel:+260962838581" className="contact-action"><span><small>PHONE</small><strong>+260 962 838 581</strong></span><ArrowUpRight size={20} aria-hidden="true" /></a>
+            <a href="tel:+260962838581" className="contact-action"><span><small>CALL</small><strong>+260 962 838 581</strong></span><ArrowUpRight size={20} aria-hidden="true" /></a>
+            <a href="https://wa.me/260962838581" target="_blank" rel="noopener noreferrer" className="contact-action"><span><small>WHATSAPP</small><strong>+260 962 838 581</strong></span><ArrowUpRight size={20} aria-hidden="true" /></a>
             <a href="https://www.linkedin.com/in/ronisher-bwalya-30268a3aa?utm_source=share_via&amp;utm_content=profile&amp;utm_medium=member_android" target="_blank" rel="noopener noreferrer" className="contact-action"><span><small>LINKEDIN</small><strong>Ronisher Bwalya</strong></span><ArrowUpRight size={20} aria-hidden="true" /></a>
             <a href="https://www.facebook.com/share/1Fv1rJi7JZ/" target="_blank" rel="noopener noreferrer" className="contact-action"><span><small>FACEBOOK</small><strong>Facebook profile</strong></span><ArrowUpRight size={20} aria-hidden="true" /></a>
             <a href={personalInfo.githubUrl} target="_blank" rel="noopener noreferrer" className="contact-action"><span><small>GITHUB</small><strong>github.com/ArabNinja-hub</strong></span><ArrowUpRight size={20} aria-hidden="true" /></a>
